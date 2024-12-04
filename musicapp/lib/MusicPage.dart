@@ -39,7 +39,7 @@ class _MusicPageState extends State<MusicPage> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              const Color.fromARGB(255, 30, 11, 63),
+              const Color.fromARGB(255, 55, 15, 124),
               const Color.fromARGB(193, 13, 1, 34),
             ],
             end: Alignment.topCenter,
