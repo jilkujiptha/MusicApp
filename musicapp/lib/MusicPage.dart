@@ -40,7 +40,7 @@ class _MusicPageState extends State<MusicPage> {
           gradient: LinearGradient(
             colors: [
               const Color.fromARGB(255, 55, 15, 124),
-              const Color.fromARGB(193, 13, 1, 34),
+              Colors.black,
             ],
             end: Alignment.topCenter,
             begin: Alignment.bottomCenter,
