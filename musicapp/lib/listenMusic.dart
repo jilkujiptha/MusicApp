@@ -12,6 +12,8 @@ class _ListenmusicState extends State<Listenmusic>
   late AnimationController _controller;
   bool _isIcon = false;
   bool _isFavorite = false;
+  bool _isShuffle = false;
+  bool _isRepeat = false;
 
   @override
   void initState() {
@@ -26,6 +28,7 @@ class _ListenmusicState extends State<Listenmusic>
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.transparent,
         title: Column(
           children: [
@@ -82,9 +85,12 @@ class _ListenmusicState extends State<Listenmusic>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 25,
+            ),
             Container(
-              width: 250,
-              height: 250,
+              width: 400,
+              height: 400,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: const Color.fromARGB(193, 38, 13, 80),
@@ -92,16 +98,19 @@ class _ListenmusicState extends State<Listenmusic>
                   BoxShadow(blurRadius: 5, color: Colors.black),
                 ],
               ),
-              child: Image.asset(
-                "./Image/images.jpeg",
-                fit: BoxFit.cover,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  "./Image/images.jpeg",
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             SizedBox(
               height: 40,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Column(
                   children: [
@@ -115,27 +124,6 @@ class _ListenmusicState extends State<Listenmusic>
                     )
                   ],
                 ),
-                Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      width: 20,
-                      height: 20,
-                      child: Image.asset(
-                        "./Image/share.png",
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.more_horiz,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
             SizedBox(
@@ -188,14 +176,13 @@ class _ListenmusicState extends State<Listenmusic>
                     onPressed: () {
                       setState(() {
                         _isIcon = !_isIcon;
-                        _controller.forward(from: 0);
+
+                        _isIcon ? _controller.reverse() : _controller.forward();
                       });
                     },
                     icon: AnimatedIcon(
-                        icon: _isIcon
-                            ? AnimatedIcons.pause_play
-                            : AnimatedIcons.play_pause,
-                        size: 60,
+                        icon: AnimatedIcons.pause_play,
+                        size: 50,
                         color: Colors.white,
                         progress: _controller)),
                 SizedBox(
@@ -217,19 +204,27 @@ class _ListenmusicState extends State<Listenmusic>
             Row(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _isShuffle = !_isShuffle;
+                    });
+                  },
                   icon: Icon(
                     Icons.shuffle,
-                    color: Colors.white,
+                    color: _isShuffle ? Colors.green : Colors.white,
                     size: 30,
                   ),
                 ),
                 Spacer(),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _isRepeat = !_isRepeat;
+                    });
+                  },
                   icon: Icon(
                     Icons.repeat,
-                    color: Colors.white,
+                    color: _isRepeat ? Colors.green : Colors.white,
                     size: 30,
                   ),
                 ),

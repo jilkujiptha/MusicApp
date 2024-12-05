@@ -7,33 +7,51 @@ class MusicPage extends StatefulWidget {
   State<MusicPage> createState() => _MusicPageState();
 }
 
-class _MusicPageState extends State<MusicPage> {
+class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(
+          "Music Player",
+          style: TextStyle(color: Colors.white),
+        ),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, "listen");
+          },
           icon: Icon(
             Icons.widgets_outlined,
             color: Colors.white,
-            size: 35,
+            size: 30,
           ),
         ),
         actions: [
           IconButton(
             onPressed: () {},
             icon: Icon(
-              Icons.search,
-              size: 35,
+              Icons.more_vert,
+              size: 30,
               color: Colors.white,
             ),
           ),
         ],
       ),
       body: Container(
+          padding: EdgeInsets.all(20),
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(
@@ -46,19 +64,139 @@ class _MusicPageState extends State<MusicPage> {
               begin: Alignment.bottomCenter,
             ),
           ),
-          child: ListView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 100,
+              ),
+              Text(
+                "Hi",
+                style: TextStyle(
+                    color: Colors.white, fontSize: 25, fontFamily: "Schyler"),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "WHAT YOU WANT TO HEAR TODAY?",
+                style: TextStyle(
+                    color: Colors.white, fontSize: 15, fontFamily: "Schyler"),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 20),
+                width: double.infinity,
+                height: 60,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: const Color.fromARGB(255, 28, 4, 70),),
+                    child: Row(
+                      children: [
+                        Icon(Icons.search)
+                      ],
+                    ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    width: 20,
+                  ),
                   Container(
-                    width: 100,
-                    height: 70,
+                    padding: EdgeInsets.all(20),
+                    width: 150,
+                    height: 80,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.deepPurple),
+                        color: const Color.fromARGB(255, 51, 7, 126)),
+                    child: Center(
+                      child: Text(
+                        "All Songs",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
+                  Spacer(),
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    width: 150,
+                    height: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color.fromARGB(255, 51, 7, 126)),
+                    child: Center(
+                      child: Text(
+                        "Favorites",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  )
                 ],
               ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "My Music",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                child: TabBar(
+                  unselectedLabelColor: Colors.white,
+                  controller: _tabController,
+                  dividerColor: Colors.transparent,
+                  tabs: [
+                    Tab(
+                      text: "Song",
+                    ),
+                    Tab(
+                      text: "Artist",
+                    ),
+                    Tab(
+                      text: "Album",
+                    ),
+                    Tab(
+                      text: "Favorites",
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: TabBarView(controller: _tabController, children: [
+                  Container(
+                    child: Center(
+                      child: Text("data"),
+                    ),
+                  ),
+                  Container(
+                    child: Center(
+                      child: Text("data"),
+                    ),
+                  ),
+                  Container(
+                    child: Center(
+                      child: Text("data"),
+                    ),
+                  ),
+                  Container(
+                    child: Center(
+                      child: Text("data"),
+                    ),
+                  ),
+                ]),
+              )
             ],
           )),
     );
