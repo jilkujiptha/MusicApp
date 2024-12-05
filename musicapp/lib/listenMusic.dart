@@ -7,7 +7,20 @@ class Listenmusic extends StatefulWidget {
   State<Listenmusic> createState() => _ListenmusicState();
 }
 
-class _ListenmusicState extends State<Listenmusic> {
+class _ListenmusicState extends State<Listenmusic>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  bool _isIcon = false;
+  bool _isFavorite = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +44,14 @@ class _ListenmusicState extends State<Listenmusic> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                _isFavorite = !_isFavorite;
+              });
+            },
             icon: Icon(
-              Icons.favorite_outline,
-              color: Colors.white,
+              _isFavorite ? Icons.favorite : Icons.favorite_outline,
+              color: _isFavorite ? Colors.red : Colors.white,
               size: 25,
             ),
           ),
@@ -146,7 +163,78 @@ class _ListenmusicState extends State<Listenmusic> {
                   style: TextStyle(color: Colors.white),
                 )
               ],
-            )
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.skip_previous,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                IconButton(
+                    alignment: Alignment.center,
+                    style: IconButton.styleFrom(
+                        backgroundColor: Colors.deepPurple),
+                    onPressed: () {
+                      setState(() {
+                        _isIcon = !_isIcon;
+                        _controller.forward(from: 0);
+                      });
+                    },
+                    icon: AnimatedIcon(
+                        icon: _isIcon
+                            ? AnimatedIcons.pause_play
+                            : AnimatedIcons.play_pause,
+                        size: 60,
+                        color: Colors.white,
+                        progress: _controller)),
+                SizedBox(
+                  width: 20,
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.skip_next,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.shuffle,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+                Spacer(),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.repeat,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

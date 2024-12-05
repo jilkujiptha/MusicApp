@@ -34,19 +34,33 @@ class _MusicPageState extends State<MusicPage> {
         ],
       ),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color.fromARGB(255, 55, 15, 124),
-              Colors.black,
-            ],
-            end: Alignment.topCenter,
-            begin: Alignment.bottomCenter,
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color.fromARGB(255, 55, 15, 124),
+                Colors.black,
+              ],
+              end: Alignment.topCenter,
+              begin: Alignment.bottomCenter,
+            ),
           ),
-        ),
-      ),
+          child: ListView(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 100,
+                    height: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.deepPurple),
+                  ),
+                ],
+              ),
+            ],
+          )),
     );
   }
 }

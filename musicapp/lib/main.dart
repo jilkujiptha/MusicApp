@@ -5,6 +5,6 @@ import 'package:musicapp/loginPage.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: Listenmusic(),
+    home: MusicPage(),
   ));
 }
