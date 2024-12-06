@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musicapp/showBottomSheet.dart';
 
 class MusicPage extends StatefulWidget {
   const MusicPage({super.key});
@@ -15,6 +16,14 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+  }
+
+  void _bottomButton() {
+    showModalBottomSheet(
+      context: context,
+      builder: (cxt) => ShowBottomSheet(),
+      backgroundColor: const Color.fromARGB(255, 40, 6, 97),
+    );
   }
 
   @override
@@ -87,7 +96,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                 height: 20,
               ),
               Container(
-                  padding: EdgeInsets.only(left: 20, right: 20),
+                  padding: EdgeInsets.only(left: 20, top: 5),
                   width: double.infinity,
                   height: 50,
                   decoration: BoxDecoration(
@@ -97,15 +106,14 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                   child: Expanded(
                     child: TextField(
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.search,
-                            color: Colors.white,
+                          border: InputBorder.none,
+                          prefixIcon: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.search,
+                            ),
                           ),
-                        ),
-                      ),
+                          hintText: "Search..."),
                       style: TextStyle(color: Colors.white),
                     ),
                   )),
@@ -159,9 +167,6 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                 "My Music",
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
-              SizedBox(
-                height: 20,
-              ),
               Container(
                 child: TabBar(
                   unselectedLabelColor: Colors.white,
@@ -186,10 +191,65 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
               Expanded(
                 child: TabBarView(controller: _tabController, children: [
                   Container(
-                    child: Center(
-                      child: Text("data"),
-                    ),
-                  ),
+                      child: Expanded(
+                    child: ListView.builder(
+                        itemCount: 2,
+                        itemBuilder: (context, index) {
+                          return Container(
+                              // padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.only(top: 15),
+                              width: MediaQuery.of(context).size.width,
+                              height: 60,
+                              // color: Colors.black,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // SizedBox(
+                                  //   height: 20,
+                                  // ),
+                                  Container(
+                                    // padding: EdgeInsets.all(20),
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: const Color.fromARGB(
+                                            193, 38, 13, 80)),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.asset(
+                                        "./Image/images.jpeg",
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Kesariya ('From Brahmastra')",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 18),
+                                      ),
+                                      Text(
+                                        "Arijith singh,Amithabh bhattacharya",
+                                        style: TextStyle(color: Colors.grey),
+                                      )
+                                    ],
+                                  ),
+                                  Spacer(),
+                                  IconButton(
+                                      onPressed: _bottomButton,
+                                      icon: Icon(
+                                        Icons.more_vert,
+                                        color: Colors.white,
+                                      ))
+                                ],
+                              ));
+                        }),
+                  )),
                   Container(
                     child: Center(
                       child: Text("data"),
@@ -206,7 +266,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                     ),
                   ),
                 ]),
-              )
+              ),
             ],
           )),
     );
