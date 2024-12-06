@@ -87,18 +87,28 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                 height: 20,
               ),
               Container(
-                padding: EdgeInsets.only(left: 20),
-                width: double.infinity,
-                height: 60,
-                decoration: BoxDecoration(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: const Color.fromARGB(255, 28, 4, 70),),
-                    child: Row(
-                      children: [
-                        Icon(Icons.search)
-                      ],
+                    color: const Color.fromARGB(255, 28, 4, 70),
+                  ),
+                  child: Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      style: TextStyle(color: Colors.white),
                     ),
-              ),
+                  )),
               SizedBox(
                 height: 20,
               ),

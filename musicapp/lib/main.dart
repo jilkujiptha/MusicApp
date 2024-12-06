@@ -13,12 +13,12 @@ void main() async {
   );
 
   runApp(MaterialApp(
-    home: MainPage(),
+    home: MusicPage(),
     routes: {
-      "listen":(context)=>Listenmusic(),
-      "login":(context)=>LoginPage(),
-      "main":(context)=>MainPage(),
-      "music":(context)=>MusicPage()
+      "listen": (context) => Listenmusic(),
+      "login": (context) => LoginPage(),
+      "main": (context) => MainPage(),
+      "music": (context) => MusicPage()
     },
   ));
 }
