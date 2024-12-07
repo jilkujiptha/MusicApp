@@ -39,9 +39,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
           style: TextStyle(color: Colors.white),
         ),
         leading: IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, "listen");
-          },
+          onPressed: () {},
           icon: Icon(
             Icons.widgets_outlined,
             color: Colors.white,
@@ -193,61 +191,70 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                   Container(
                       child: Expanded(
                     child: ListView.builder(
+                        padding: EdgeInsets.all(10),
                         itemCount: 2,
                         itemBuilder: (context, index) {
-                          return Container(
-                              // padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.only(top: 15),
-                              width: MediaQuery.of(context).size.width,
-                              height: 60,
-                              // color: Colors.black,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  // SizedBox(
-                                  //   height: 20,
-                                  // ),
-                                  Container(
-                                    // padding: EdgeInsets.all(20),
-                                    width: 60,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: const Color.fromARGB(
-                                            193, 38, 13, 80)),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.asset(
-                                        "./Image/images.jpeg",
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, "listen");
+                            },
+                            child: Container(
+                                // padding: EdgeInsets.all(10),
+                                margin: EdgeInsets.only(top: 15),
+                                width: MediaQuery.of(context).size.width,
+                                height: 60,
+                                // color: Colors.black,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    // SizedBox(
+                                    //   height: 20,
+                                    // ),
+                                    Container(
+                                      // padding: EdgeInsets.all(20),
+                                      width: 60,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: const Color.fromARGB(
+                                              193, 38, 13, 80)),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.asset(
+                                          "./Image/images.jpeg",
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Kesariya ('From Brahmastra')",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 18),
-                                      ),
-                                      Text(
-                                        "Arijith singh,Amithabh bhattacharya",
-                                        style: TextStyle(color: Colors.grey),
-                                      )
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  IconButton(
-                                      onPressed: _bottomButton,
-                                      icon: Icon(
-                                        Icons.more_vert,
-                                        color: Colors.white,
-                                      ))
-                                ],
-                              ));
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Kesariya ('From Brahmastra')",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18),
+                                        ),
+                                        Text(
+                                          "Arijith singh,Amithabh bhattacharya",
+                                          style: TextStyle(color: Colors.grey),
+                                        )
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    IconButton(
+                                        onPressed: _bottomButton,
+                                        icon: Icon(
+                                          Icons.more_vert,
+                                          color: Colors.white,
+                                        ))
+                                  ],
+                                )),
+                          );
                         }),
                   )),
                   Container(

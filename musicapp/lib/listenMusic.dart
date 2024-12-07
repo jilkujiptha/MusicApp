@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musicapp/showBottomSheet.dart';
 
 class Listenmusic extends StatefulWidget {
   const Listenmusic({super.key});
@@ -21,6 +22,14 @@ class _ListenmusicState extends State<Listenmusic>
     super.initState();
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+  }
+
+  void _bottomButton() {
+    showModalBottomSheet(
+      context: context,
+      builder: (cxt) => ShowBottomSheet(),
+      backgroundColor: const Color.fromARGB(255, 40, 6, 97),
+    );
   }
 
   @override
@@ -59,7 +68,7 @@ class _ListenmusicState extends State<Listenmusic>
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: _bottomButton,
             icon: Icon(
               Icons.menu,
               color: Colors.white,
@@ -131,7 +140,7 @@ class _ListenmusicState extends State<Listenmusic>
             ),
             Container(
               width: double.infinity,
-              height: 10,
+              height: 5,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: const Color.fromARGB(255, 40, 6, 97)),
