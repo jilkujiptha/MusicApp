@@ -38,6 +38,11 @@ dependencies:
   firebase_auth: ^5.3.4
   google_sign_in: ^6.2.2
   firebase_core: ^3.8.1
+  just_audio: ^0.9.42
+  path_provider: ^2.1.5
+  permission_handler: ^11.3.1
+  flutter_media_metadata: ^1.0.0+1
+  metadata_retriver: ^0.0.2
 
 dev_dependencies:
   flutter_test:

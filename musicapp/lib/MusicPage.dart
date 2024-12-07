@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:musicapp/showBottomSheet.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MusicPage extends StatefulWidget {
   const MusicPage({super.key});
@@ -10,12 +16,21 @@ class MusicPage extends StatefulWidget {
 
 class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
   late TabController _tabController;
+  TextEditingController search = TextEditingController();
+  List<File> musicFiles = [];
+  final AudioPlayer player = AudioPlayer();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+    requestPermission().then((_) => loadMusicFiles());
+  }
+
+  Future<void> loadMusicFiles() async {
+    musicFiles = await getMusicFile();
+    setState(() {});
   }
 
   void _bottomButton() {
@@ -24,6 +39,39 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
       builder: (cxt) => ShowBottomSheet(),
       backgroundColor: const Color.fromARGB(255, 40, 6, 97),
     );
+  }
+
+  Future<void> requestPermission() async {
+    if (await Permission.storage.request().isGranted ||
+        await Permission.manageExternalStorage.request().isGranted) {
+      print("permmission granted");
+    } else {
+      print("permission denied");
+    }
+  }
+
+  Future<List<File>> getMusicFile() async {
+    // final directory = await getExternalStorageDirectory();
+    final musicDir = Directory("/storage/emulated/0/Music");
+
+    if (musicDir.existsSync()) {
+      return musicDir
+          .listSync()
+          .where((file) => file.path.endsWith(".m4a"))
+          .map((file) => File(file.path))
+          .toList();
+    } else {
+      return [];
+    }
+  }
+
+  final Player = AudioPlayer();
+  Future<void> playMusic(String filePath) async {
+    try {
+      await Player.play();
+    } catch (e) {
+      print("Error Playing audio:$e");
+    }
   }
 
   @override
@@ -58,7 +106,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
         ],
       ),
       body: Container(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(10),
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(
@@ -103,6 +151,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                   ),
                   child: Expanded(
                     child: TextField(
+                      controller: search,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           prefixIcon: IconButton(
@@ -189,79 +238,132 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
               Expanded(
                 child: TabBarView(controller: _tabController, children: [
                   Container(
-                      child: Expanded(
-                    child: ListView.builder(
-                        padding: EdgeInsets.all(10),
-                        itemCount: 2,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, "listen");
-                            },
-                            child: Container(
-                                // padding: EdgeInsets.all(10),
-                                margin: EdgeInsets.only(top: 15),
-                                width: MediaQuery.of(context).size.width,
-                                height: 60,
-                                // color: Colors.black,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    // SizedBox(
-                                    //   height: 20,
-                                    // ),
-                                    Container(
-                                      // padding: EdgeInsets.all(20),
-                                      width: 60,
-                                      height: 60,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: const Color.fromARGB(
-                                              193, 38, 13, 80)),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.asset(
-                                          "./Image/images.jpeg",
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Kesariya ('From Brahmastra')",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18),
-                                        ),
-                                        Text(
-                                          "Arijith singh,Amithabh bhattacharya",
-                                          style: TextStyle(color: Colors.grey),
-                                        )
-                                      ],
-                                    ),
-                                    Spacer(),
-                                    IconButton(
-                                        onPressed: _bottomButton,
-                                        icon: Icon(
-                                          Icons.more_vert,
-                                          color: Colors.white,
-                                        ))
-                                  ],
-                                )),
-                          );
-                        }),
-                  )),
+                      child: musicFiles.isEmpty
+                          ? Center(
+                              child: Text(
+                                "No music files found",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          : Expanded(
+                              child: ListView.builder(
+                                  padding: EdgeInsets.only(top: 10),
+                                  itemCount: musicFiles.length,
+                                  itemBuilder: (context, index) {
+                                    final file = musicFiles[index];
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        await player.setFilePath(file.path);
+                                        player.play();
+                                        // Navigator.pushNamed(context, "listen");
+                                      },
+                                      child: Container(
+                                          margin: EdgeInsets.only(top: 20),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 60,
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 60,
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    color: const Color.fromARGB(
+                                                        193, 38, 13, 80)),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Image.asset(
+                                                    "./Image/images.jpeg",
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    file.path
+                                                        .split("/")
+                                                        .last
+                                                        .split("-")
+                                                        .first,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15),
+                                                  ),
+                                                  Text(
+                                                    file.path
+                                                        .split("/")
+                                                        .last
+                                                        .split("-")
+                                                        .last
+                                                        .substring(
+                                                            0,
+                                                            file.path
+                                                                    .split("/")
+                                                                    .last
+                                                                    .split("-")
+                                                                    .last
+                                                                    .length -
+                                                                4),
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12),
+                                                  )
+                                                ],
+                                              ),
+                                              Spacer(),
+                                              IconButton(
+                                                  onPressed: _bottomButton,
+                                                  icon: Icon(
+                                                    Icons.more_vert,
+                                                    color: Colors.white,
+                                                  ))
+                                            ],
+                                          )),
+                                    );
+                                  }),
+                            )),
                   Container(
-                    child: Center(
-                      child: Text("data"),
-                    ),
-                  ),
+                      child: ListView.builder(
+                          itemCount: musicFiles.length,
+                          itemBuilder: (context, index) {
+                            final file = musicFiles[index];
+
+                            return Container(
+                              
+                              child: Text(
+                                file.path
+                                    .split("/")
+                                    .last
+                                    .split("-")
+                                    .last
+                                    .substring(
+                                        0,
+                                        file.path
+                                                .split("/")
+                                                .last
+                                                .split("-")
+                                                .last
+                                                .length -
+                                            4),
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 20),
+                              ),
+                            );
+                          })),
                   Container(
                     child: Center(
                       child: Text("data"),
