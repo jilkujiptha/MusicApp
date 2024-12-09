@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musicapp/showBottomSheet.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,6 +18,8 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
   TextEditingController search = TextEditingController();
   List<File> musicFiles = [];
   final AudioPlayer player = AudioPlayer();
+
+  int currentIndex = 0;
 
   @override
   void initState() {
@@ -71,6 +72,24 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
       await Player.play();
     } catch (e) {
       print("Error Playing audio:$e");
+    }
+  }
+
+  Future<void> playNext() async {
+    if (currentIndex < musicFiles.length - 1) {
+      setState(() {
+        currentIndex++;
+      });
+      playMusic(musicFiles[currentIndex].path);
+    }
+  }
+
+  Future<void> playPrevious() async {
+    if (currentIndex < 0) {
+      setState(() {
+        currentIndex--;
+      });
+      playMusic(musicFiles[currentIndex].path);
     }
   }
 
@@ -338,37 +357,109 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                             )),
                   Container(
                       child: ListView.builder(
+                          padding: EdgeInsets.all(10),
                           itemCount: musicFiles.length,
                           itemBuilder: (context, index) {
                             final file = musicFiles[index];
 
                             return Container(
-                              
-                              child: Text(
-                                file.path
-                                    .split("/")
-                                    .last
-                                    .split("-")
-                                    .last
-                                    .substring(
-                                        0,
-                                        file.path
-                                                .split("/")
-                                                .last
-                                                .split("-")
-                                                .last
-                                                .length -
-                                            4),
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 20),
+                                child: Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.all(5),
+                                  width: 70,
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color:
+                                          const Color.fromARGB(193, 38, 13, 80),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 1,
+                                            color: const Color.fromARGB(
+                                                193, 19, 2, 49),
+                                            offset: Offset(5, 5))
+                                      ]),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 35,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  file.path
+                                      .split("/")
+                                      .last
+                                      .split("-")
+                                      .last
+                                      .substring(
+                                          0,
+                                          file.path
+                                                  .split("/")
+                                                  .last
+                                                  .split("-")
+                                                  .last
+                                                  .length -
+                                              4),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13),
+                                )
+                              ],
+                            ));
+                          })),
+                  Container(
+                      child: ListView.builder(
+                          padding: EdgeInsets.all(10),
+                          itemCount: musicFiles.length,
+                          itemBuilder: (context, index) {
+                            final file = musicFiles[index];
+                            return GestureDetector(
+                              onTap: () async {
+                                await player.setFilePath(file.path);
+                                player.play();
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(20),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      file.path
+                                          .split("/")
+                                          .last
+                                          .split("-")
+                                          .first,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 18),
+                                    ),
+                                    Text(
+                                      file.path
+                                          .split("/")
+                                          .last
+                                          .split("-")
+                                          .last
+                                          .substring(
+                                              0,
+                                              file.path
+                                                      .split("/")
+                                                      .last
+                                                      .split("-")
+                                                      .last
+                                                      .length -
+                                                  4),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 13),
+                                    )
+                                  ],
+                                ),
                               ),
                             );
                           })),
-                  Container(
-                    child: Center(
-                      child: Text("data"),
-                    ),
-                  ),
                   Container(
                     child: Center(
                       child: Text("data"),

@@ -41,9 +41,7 @@ dependencies:
   just_audio: ^0.9.42
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
-  flutter_media_metadata: ^1.0.0+1
-  metadata_retriver: ^0.0.2
-
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter

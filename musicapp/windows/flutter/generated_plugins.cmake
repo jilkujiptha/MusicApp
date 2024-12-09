@@ -5,7 +5,6 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   firebase_auth
   firebase_core
-  flutter_media_metadata
   permission_handler_windows
 )
 
