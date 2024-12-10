@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musicapp/MainPage.dart';
 import 'package:musicapp/MusicPage.dart';
+import 'package:musicapp/favoriteSong.dart';
 import 'package:musicapp/listenMusic.dart';
 import 'package:musicapp/loginPage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,7 +19,8 @@ void main() async {
       "listen": (context) => Listenmusic(),
       "login": (context) => LoginPage(),
       "main": (context) => MainPage(),
-      "music": (context) => MusicPage()
+      "music": (context) => MusicPage(),
+      "album":(context)=>Album()
     },
   ));
 }

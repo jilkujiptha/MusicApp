@@ -10,8 +10,10 @@ class ShowBottomSheet extends StatefulWidget {
 }
 
 class _ShowBottomSheetState extends State<ShowBottomSheet> {
+  String? _page;
   @override
   Widget build(BuildContext context) {
+    _page = ModalRoute.of(context)!.settings.arguments as String;
     return Container(
       // color: const Color.fromARGB(255, 40, 6, 97),
       padding: EdgeInsets.all(20),
@@ -76,7 +78,7 @@ class _ShowBottomSheetState extends State<ShowBottomSheet> {
               ),
               TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "listen");
+                    // Navigator.pushNamed(context, "album",arguments: _page);
                   },
                   child: Text(
                     "View Album",

@@ -416,7 +416,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                           .split("-")
                                           .first,
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 18),
+                                          color: Colors.white, fontSize: 15),
                                     ),
                                     Text(
                                       file.path
@@ -434,7 +434,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                       .length -
                                                   4),
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 13),
+                                          color: Colors.white, fontSize: 12),
                                     )
                                   ],
                                 ),

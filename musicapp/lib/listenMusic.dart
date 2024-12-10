@@ -14,6 +14,8 @@ class Listenmusic extends StatefulWidget {
 class _ListenmusicState extends State<Listenmusic>
     with SingleTickerProviderStateMixin {
   final AudioPlayer player = AudioPlayer();
+  Duration _currentPosition = Duration.zero;
+  Duration _totalDuration = Duration.zero;
   List<File> musicFiles = [];
 
   String? _page;
@@ -31,9 +33,25 @@ class _ListenmusicState extends State<Listenmusic>
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     Future.delayed(
-      Duration(milliseconds: 50),
+      Duration(milliseconds: 5),
       () => playMusic(_page!),
     );
+    player.positionStream.listen((position) {
+      setState(() {
+        _currentPosition = position;
+      });
+    });
+
+    player.durationStream.listen((duration) {
+      setState(() {
+        _totalDuration = duration ?? Duration.zero;
+      });
+    });
+  }
+
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 
   void _bottomButton() {
@@ -63,6 +81,12 @@ class _ListenmusicState extends State<Listenmusic>
     setState(() {
       currentIndex = (currentIndex - 1 + musicFiles.length) % musicFiles.length;
     });
+  }
+
+  String? _formatDuration(Duration duration) {
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, "0");
+    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, "0");
+    return "$minutes:$seconds";
   }
 
   @override
@@ -158,6 +182,7 @@ class _ListenmusicState extends State<Listenmusic>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       _page!.split("/").last.split("-").first,
@@ -176,11 +201,22 @@ class _ListenmusicState extends State<Listenmusic>
               height: 25,
             ),
             Container(
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width,
               height: 5,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: const Color.fromARGB(255, 40, 6, 97)),
+              child: Slider(
+                  activeColor: const Color.fromARGB(255, 40, 6, 97),
+                  min: 0.0,
+                  max: _totalDuration.inSeconds.toDouble(),
+                  value: _currentPosition.inSeconds
+                      .toDouble()
+                      .clamp(0.0, _totalDuration.inSeconds.toDouble()),
+                  onChanged: (value) {
+                    final newPosition = Duration(seconds: value.round());
+                    player.seek(newPosition);
+                  }),
             ),
             SizedBox(
               height: 10,
@@ -189,11 +225,11 @@ class _ListenmusicState extends State<Listenmusic>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "0.00",
+                  "${_formatDuration(_currentPosition)}",
                   style: TextStyle(color: Colors.white),
                 ),
                 Text(
-                  "0.00",
+                  "${_formatDuration(_totalDuration)}",
                   style: TextStyle(color: Colors.white),
                 )
               ],
@@ -218,12 +254,13 @@ class _ListenmusicState extends State<Listenmusic>
                 IconButton(
                     alignment: Alignment.center,
                     style: IconButton.styleFrom(
-                        backgroundColor: Colors.deepPurple),
+                        backgroundColor: const Color.fromARGB(255, 40, 6, 97)),
                     onPressed: () {
                       setState(() {
                         _isIcon = !_isIcon;
 
-                        _isIcon ? _controller.reverse() : _controller.forward();
+                        _isIcon ? _controller.forward() : _controller.reverse();
+                        _isIcon ? player.pause() : player.play();
                       });
                     },
                     icon: AnimatedIcon(
