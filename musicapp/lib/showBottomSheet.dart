@@ -75,7 +75,9 @@ class _ShowBottomSheetState extends State<ShowBottomSheet> {
                 color: Colors.white,
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "listen");
+                  },
                   child: Text(
                     "View Album",
                     style: TextStyle(color: Colors.white),

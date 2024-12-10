@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:musicapp/showBottomSheet.dart';
 
 class Listenmusic extends StatefulWidget {
@@ -10,6 +13,11 @@ class Listenmusic extends StatefulWidget {
 
 class _ListenmusicState extends State<Listenmusic>
     with SingleTickerProviderStateMixin {
+  final AudioPlayer player = AudioPlayer();
+  List<File> musicFiles = [];
+
+  String? _page;
+  int currentIndex = 0;
   late AnimationController _controller;
   bool _isIcon = false;
   bool _isFavorite = false;
@@ -22,6 +30,10 @@ class _ListenmusicState extends State<Listenmusic>
     super.initState();
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    Future.delayed(
+      Duration(milliseconds: 50),
+      () => playMusic(_page!),
+    );
   }
 
   void _bottomButton() {
@@ -32,8 +44,30 @@ class _ListenmusicState extends State<Listenmusic>
     );
   }
 
+  Future<void> playMusic(String filePath) async {
+    try {
+      await player.setFilePath(filePath);
+      await player.play();
+    } catch (e) {
+      print("Error Playing audio:$e");
+    }
+  }
+
+  Future<void> playNext() async {
+    setState(() {
+      currentIndex = (currentIndex + 1) % musicFiles.length;
+    });
+  }
+
+  Future<void> playPrevious() async {
+    setState(() {
+      currentIndex = (currentIndex - 1 + musicFiles.length) % musicFiles.length;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _page = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -93,6 +127,7 @@ class _ListenmusicState extends State<Listenmusic>
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 25,
@@ -120,15 +155,17 @@ class _ListenmusicState extends State<Listenmusic>
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   children: [
                     Text(
-                      "Kesariya",
-                      style: TextStyle(color: Colors.white, fontSize: 25),
+                      _page!.split("/").last.split("-").first,
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     Text(
-                      "Arijith Singh",
+                      _page!.split("/").last.split("-").last.substring(
+                          0, _page!.split("/").last.split("-").last.length - 4),
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     )
                   ],
@@ -168,7 +205,7 @@ class _ListenmusicState extends State<Listenmusic>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: playPrevious,
                   icon: Icon(
                     Icons.skip_previous,
                     size: 40,
@@ -198,7 +235,7 @@ class _ListenmusicState extends State<Listenmusic>
                   width: 20,
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: playNext,
                   icon: Icon(
                     Icons.skip_next,
                     size: 40,

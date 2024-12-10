@@ -19,8 +19,6 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
   List<File> musicFiles = [];
   final AudioPlayer player = AudioPlayer();
 
-  int currentIndex = 0;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -72,24 +70,6 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
       await Player.play();
     } catch (e) {
       print("Error Playing audio:$e");
-    }
-  }
-
-  Future<void> playNext() async {
-    if (currentIndex < musicFiles.length - 1) {
-      setState(() {
-        currentIndex++;
-      });
-      playMusic(musicFiles[currentIndex].path);
-    }
-  }
-
-  Future<void> playPrevious() async {
-    if (currentIndex < 0) {
-      setState(() {
-        currentIndex--;
-      });
-      playMusic(musicFiles[currentIndex].path);
     }
   }
 
@@ -273,8 +253,9 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                     return GestureDetector(
                                       onTap: () async {
                                         await player.setFilePath(file.path);
-                                        player.play();
-                                        // Navigator.pushNamed(context, "listen");
+
+                                        Navigator.pushNamed(context, "listen",
+                                            arguments: file.path);
                                       },
                                       child: Container(
                                           margin: EdgeInsets.only(top: 20),
