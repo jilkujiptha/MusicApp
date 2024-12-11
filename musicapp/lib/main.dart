@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:musicapp/MainPage.dart';
 import 'package:musicapp/MusicPage.dart';
 import 'package:musicapp/favoriteSong.dart';
@@ -13,6 +15,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await Hive.initFlutter();
+  var fav = await Hive.openBox("mybox");
+
   runApp(MaterialApp(
     home: MusicPage(),
     routes: {
@@ -20,7 +25,7 @@ void main() async {
       "login": (context) => LoginPage(),
       "main": (context) => MainPage(),
       "music": (context) => MusicPage(),
-      "album":(context)=>Album()
+      "album": (context) => Album()
     },
   ));
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musicapp/modalBottomSheet.dart';
 import 'package:musicapp/showBottomSheet.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -36,6 +37,14 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
     showModalBottomSheet(
       context: context,
       builder: (cxt) => ShowBottomSheet(),
+      backgroundColor: const Color.fromARGB(255, 40, 6, 97),
+    );
+  }
+
+  void _modalBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (cxt) => ModalBottom(),
       backgroundColor: const Color.fromARGB(255, 40, 6, 97),
     );
   }
@@ -95,7 +104,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _modalBottomSheet,
             icon: Icon(
               Icons.more_vert,
               size: 30,
