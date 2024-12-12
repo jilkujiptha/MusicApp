@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:musicapp/modalBottomSheet.dart';
 import 'package:musicapp/showBottomSheet.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -19,6 +19,8 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
   TextEditingController search = TextEditingController();
   List<File> musicFiles = [];
   final AudioPlayer player = AudioPlayer();
+  List favorite = [];
+  final _favorite = Hive.box("mybox");
 
   @override
   void initState() {
@@ -26,6 +28,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     requestPermission().then((_) => loadMusicFiles());
+    favortes();
   }
 
   Future<void> loadMusicFiles() async {
@@ -37,14 +40,6 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
     showModalBottomSheet(
       context: context,
       builder: (cxt) => ShowBottomSheet(),
-      backgroundColor: const Color.fromARGB(255, 40, 6, 97),
-    );
-  }
-
-  void _modalBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      builder: (cxt) => ModalBottom(),
       backgroundColor: const Color.fromARGB(255, 40, 6, 97),
     );
   }
@@ -65,7 +60,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
     if (musicDir.existsSync()) {
       return musicDir
           .listSync()
-          .where((file) => file.path.endsWith(".m4a"))
+          .where((file) => file.path.endsWith(".mp3"))
           .map((file) => File(file.path))
           .toList();
     } else {
@@ -80,6 +75,11 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
     } catch (e) {
       print("Error Playing audio:$e");
     }
+  }
+
+  void favortes() {
+    favorite = _favorite.get("key");
+    print("===================================");
   }
 
   @override
@@ -104,7 +104,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
         ),
         actions: [
           IconButton(
-            onPressed: _modalBottomSheet,
+            onPressed: () {},
             icon: Icon(
               Icons.more_vert,
               size: 30,
@@ -451,10 +451,85 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                             );
                           })),
                   Container(
-                    child: Center(
-                      child: Text("data"),
-                    ),
-                  ),
+                      padding: EdgeInsets.all(5),
+                      child: Expanded(
+                          child: ListView.builder(
+                              padding: EdgeInsets.all(10),
+                              itemCount: favorite.length,
+                              itemBuilder: (context, index) {
+                                final file = favorite[index];
+                                return GestureDetector(
+                                    onTap: () async {
+                                      await player.setFilePath(file);
+                                      Navigator.pushNamed(context, "listen",
+                                          arguments: file);
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 60,
+                                      child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 60,
+                                              height: 60,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  color: const Color.fromARGB(
+                                                      193, 38, 13, 80)),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.asset(
+                                                  "./Image/images.jpeg",
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  file
+                                                      .split("/")
+                                                      .last
+                                                      .split("-")
+                                                      .first,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15),
+                                                ),
+                                                Text(
+                                                  file
+                                                      .split("/")
+                                                      .last
+                                                      .split("-")
+                                                      .last
+                                                      .substring(
+                                                          0,
+                                                          file
+                                                                  .split("/")
+                                                                  .last
+                                                                  .split("-")
+                                                                  .last
+                                                                  .length -
+                                                              4),
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12),
+                                                )
+                                              ],
+                                            ),
+                                          ]),
+                                    ));
+                              }))),
                 ]),
               ),
             ],

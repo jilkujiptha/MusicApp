@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:musicapp/MainPage.dart';
+
 import 'package:musicapp/MusicPage.dart';
 import 'package:musicapp/favoriteSong.dart';
 import 'package:musicapp/listenMusic.dart';
-import 'package:musicapp/loginPage.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -22,8 +22,6 @@ void main() async {
     home: MusicPage(),
     routes: {
       "listen": (context) => Listenmusic(),
-      "login": (context) => LoginPage(),
-      "main": (context) => MainPage(),
       "music": (context) => MusicPage(),
       "album": (context) => Album()
     },

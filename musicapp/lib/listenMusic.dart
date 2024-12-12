@@ -100,6 +100,10 @@ class _ListenmusicState extends State<Listenmusic>
     return "$minutes:$seconds";
   }
 
+  void likeSong(String song) {
+    if (!_favorite.containsKey(song)) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     _page = ModalRoute.of(context)!.settings.arguments as String;
@@ -128,6 +132,11 @@ class _ListenmusicState extends State<Listenmusic>
             onPressed: () {
               setState(() {
                 _isFavorite = !_isFavorite;
+                List ls = [];
+                ls.add(_page);
+                _favorite.put("key", ls);
+                print(ls);
+                print("==============================================");
               });
             },
             icon: Icon(
