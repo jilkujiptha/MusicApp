@@ -11,13 +11,16 @@ class musicProvider extends ChangeNotifier {
   Duration totalDuration = Duration.zero;
   Duration currentPosition = Duration.zero;
 
-
   int currentIndex = 0;
   late AnimationController controller;
   bool isIcon = false;
   bool isShuffle = false;
   bool isRepeat = false;
   bool ismuted = false;
+  bool isPlayer = false;
+  int currentMusicIndex = 0;
+
+  String name = "";
 
   Future<void> loadMusicFiles() async {
     await requestPermission();
@@ -52,7 +55,6 @@ class musicProvider extends ChangeNotifier {
     }
   }
 
-
   Future<void> playMusic(String filePath) async {
     try {
       await player.setFilePath(filePath);
@@ -74,17 +76,42 @@ class musicProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  void duration(){
+  void duration() {
     player.positionStream.listen((position) {
-     currentPosition = position;
-     notifyListeners();
+      currentPosition = position;
+      notifyListeners();
     });
 
     player.durationStream.listen((duration) {
-        totalDuration = duration ?? Duration.zero;
-        notifyListeners();
-      });
+      totalDuration = duration ?? Duration.zero;
+      notifyListeners();
+    });
     // playMusic(musicFiles[currentIndex].path);
   }
+
+  void playNext() {
+    if (currentMusicIndex < musicFiles.length - 1) {
+      currentMusicIndex++;
+      notifyListeners();
+      playMusic(musicFiles[currentMusicIndex].path);
+      name = musicFiles[currentMusicIndex].path;
+    }
   }
 
+  void playPrevious() {
+    if (currentMusicIndex > 0) {
+      currentMusicIndex--;
+      notifyListeners();
+      playMusic(musicFiles[currentMusicIndex].path);
+      name = musicFiles[currentMusicIndex].path;
+    }
+  }
+
+  void automaticNext() {
+    player.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        playNext();
+      }
+    });
+  }
+}

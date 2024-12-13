@@ -19,19 +19,15 @@ class _ListenmusicState extends State<Listenmusic>
   final AudioPlayer player = AudioPlayer();
   Duration _currentPosition = Duration.zero;
   Duration _totalDuration = Duration.zero;
-  List<File> musicFiles = [];
+  // List<File> musicFiles = [];
 
   final _favorite = Hive.box("mybox");
 // ======================================================
   String? _page;
-  int currentIndex = 0;
   late AnimationController _controller;
-  bool _isIcon = false;
+
   bool _isFavorite = false;
-  bool _isShuffle = false;
-  bool _isRepeat = false;
-  bool _ismuted = false;
-// ===============================================
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,45 +49,14 @@ class _ListenmusicState extends State<Listenmusic>
         _totalDuration = duration ?? Duration.zero;
       });
     });
-    // playMusic(musicFiles[currentIndex].path);
   }
 
-  // void dispose() {
-  //   player.dispose();
-  //   super.dispose();
-  // }
-
-// ========================================================================
   void _bottomButton() {
     showModalBottomSheet(
       context: context,
       builder: (cxt) => ShowBottomSheet(),
       backgroundColor: const Color.fromARGB(255, 40, 6, 97),
     );
-  }
-  // =====================================================================
-
-  Future<void> playMusic(String filePath) async {
-    try {
-      await player.setFilePath(filePath);
-      await player.play();
-    } catch (e) {
-      print("Error Playing audio:$e");
-    }
-  }
-
-  Future<void> playNext() async {
-    setState(() {
-      currentIndex = (currentIndex + 1) % musicFiles.length;
-    });
-    playMusic(musicFiles[currentIndex].path);
-  }
-
-  Future<void> playPrevious() async {
-    setState(() {
-      currentIndex = (currentIndex - 1 + musicFiles.length) % musicFiles.length;
-    });
-    playMusic(musicFiles[currentIndex].path);
   }
 
   String? _formatDuration(Duration duration) {
@@ -109,7 +74,7 @@ class _ListenmusicState extends State<Listenmusic>
 
   @override
   Widget build(BuildContext context) {
-    _page = ModalRoute.of(context)!.settings.arguments as String;
+    // _page = ModalRoute.of(context)!.settings.arguments as String;
     return Consumer<musicProvider>(
         builder: (context, Music, child) => Scaffold(
               extendBodyBehindAppBar: true,
@@ -122,12 +87,6 @@ class _ListenmusicState extends State<Listenmusic>
                       "Now playing",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
-                    // Center(
-                    //     child: Text(
-                    //   "Playlist  'Platlist of the day'",
-                    //   style: TextStyle(color: Colors.white, fontSize: 18),
-                    // ),
-                    // ),
                   ],
                 ),
                 centerTitle: true,
@@ -138,13 +97,13 @@ class _ListenmusicState extends State<Listenmusic>
                         _isFavorite = !_isFavorite;
                         List ls = [];
                         _favorite.get("key");
-                        if (_favorite.get("key")!=null) {
-                         ls=_favorite.get("key");
-                         ls.add(_page);
-                        _favorite.put("key", ls); 
-                        }else{
-                           ls.add(_page);
-                        _favorite.put("key", ls);
+                        if (_favorite.get("key") != null) {
+                          ls = _favorite.get("key");
+                          ls.add(Music.name);
+                          _favorite.put("key", ls);
+                        } else {
+                          ls.add(Music.name);
+                          _favorite.put("key", ls);
                         }
                         print(ls);
                         print("==============================================");
@@ -216,20 +175,25 @@ class _ListenmusicState extends State<Listenmusic>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _page!.split("/").last.split("-").first,
+                              Music.name.split("/").last.split("-").first,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
                             Text(
-                              _page!.split("/").last.split("-").last.substring(
-                                  0,
-                                  _page!
-                                          .split("/")
-                                          .last
-                                          .split("-")
-                                          .last
-                                          .length -
-                                      4),
+                              Music.name
+                                  .split("/")
+                                  .last
+                                  .split("-")
+                                  .last
+                                  .substring(
+                                      0,
+                                      Music.name
+                                              .split("/")
+                                              .last
+                                              .split("-")
+                                              .last
+                                              .length -
+                                          4),
                               style:
                                   TextStyle(color: Colors.white, fontSize: 15),
                             )
@@ -289,7 +253,9 @@ class _ListenmusicState extends State<Listenmusic>
                       children: [
                         // Text(musicFiles[currentIndex].path.split("/").last),
                         IconButton(
-                          onPressed: playPrevious,
+                          onPressed: () {
+                            Music.playPrevious();
+                          },
                           icon: Icon(
                             Icons.skip_previous,
                             size: 40,
@@ -325,7 +291,9 @@ class _ListenmusicState extends State<Listenmusic>
                           width: 20,
                         ),
                         IconButton(
-                          onPressed: playNext,
+                          onPressed: () {
+                            Music.playNext();
+                          },
                           icon: Icon(
                             Icons.skip_next,
                             size: 40,
