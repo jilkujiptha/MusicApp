@@ -137,8 +137,15 @@ class _ListenmusicState extends State<Listenmusic>
                       setState(() {
                         _isFavorite = !_isFavorite;
                         List ls = [];
-                        ls.add(_page);
+                        _favorite.get("key");
+                        if (_favorite.get("key")!=null) {
+                         ls=_favorite.get("key");
+                         ls.add(_page);
+                        _favorite.put("key", ls); 
+                        }else{
+                           ls.add(_page);
                         _favorite.put("key", ls);
+                        }
                         print(ls);
                         print("==============================================");
                       });
@@ -299,12 +306,14 @@ class _ListenmusicState extends State<Listenmusic>
                                     const Color.fromARGB(255, 40, 6, 97)),
                             onPressed: () {
                               setState(() {
-                                _isIcon = !_isIcon;
+                                Music.isIcon = !Music.isIcon;
 
-                                _isIcon
+                                Music.isIcon
                                     ? _controller.forward()
                                     : _controller.reverse();
-                                _isIcon ? player.pause() : player.play();
+                                Music.isIcon
+                                    ? Music.player.pause()
+                                    : Music.player.play();
                               });
                             },
                             icon: AnimatedIcon(
@@ -333,12 +342,13 @@ class _ListenmusicState extends State<Listenmusic>
                         IconButton(
                           onPressed: () {
                             setState(() {
-                              _isShuffle = !_isShuffle;
+                              Music.isShuffle = !Music.isShuffle;
                             });
                           },
                           icon: Icon(
                             Icons.shuffle,
-                            color: _isShuffle ? Colors.green : Colors.white,
+                            color:
+                                Music.isShuffle ? Colors.green : Colors.white,
                             size: 30,
                           ),
                         ),
@@ -346,12 +356,14 @@ class _ListenmusicState extends State<Listenmusic>
                         IconButton(
                             onPressed: () {
                               setState(() {
-                                _ismuted = !_ismuted;
+                                Music.ismuted = !Music.ismuted;
                               });
-                              player.setVolume(_ismuted ? 0.0 : 1.0);
+                              Music.player.setVolume(Music.ismuted ? 0.0 : 1.0);
                             },
                             icon: Icon(
-                              _ismuted ? Icons.volume_off : Icons.volume_up,
+                              Music.ismuted
+                                  ? Icons.volume_off
+                                  : Icons.volume_up,
                               color: Colors.white,
                               size: 30,
                             )),
@@ -359,15 +371,15 @@ class _ListenmusicState extends State<Listenmusic>
                         IconButton(
                           onPressed: () {
                             setState(() {
-                              _isRepeat = !_isRepeat;
-                              _isRepeat
-                                  ? player.setLoopMode(LoopMode.one)
-                                  : player.setLoopMode(LoopMode.off);
+                              Music.isRepeat = !Music.isRepeat;
+                              Music.isRepeat
+                                  ? Music.player.setLoopMode(LoopMode.one)
+                                  : Music.player.setLoopMode(LoopMode.off);
                             });
                           },
                           icon: Icon(
                             Icons.repeat,
-                            color: _isRepeat ? Colors.green : Colors.white,
+                            color: Music.isRepeat ? Colors.green : Colors.white,
                             size: 30,
                           ),
                         ),

@@ -30,7 +30,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     data();
-    // favortes();
+    favortes();
   }
 
   Future<void> loadMusicFiles() async {
@@ -77,6 +77,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
   }
 
   final Player = AudioPlayer();
+  bool isFavorite = false;
   Future<void> playMusic(String filePath) async {
     try {
       await Player.play();
@@ -489,96 +490,102 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                     );
                                   })),
                           Container(
-                              padding: EdgeInsets.all(5),
                               child: Expanded(
                                   child: ListView.builder(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.only(top: 5),
                                       itemCount: favorite.length,
                                       itemBuilder: (context, index) {
                                         final file = favorite[index];
                                         return GestureDetector(
-                                            onTap: () async {
-                                              await player.setFilePath(file);
-                                              Navigator.pushNamed(
-                                                  context, "listen",
-                                                  arguments: file);
-                                            },
-                                            child: Container(
+                                          onTap: () async {
+                                            await player.setFilePath(file);
+                                            Navigator.pushNamed(
+                                                context, "listen",
+                                                arguments: file);
+                                          },
+                                          child: Container(
+                                              margin: EdgeInsets.only(top: 20),
                                               width: MediaQuery.of(context)
                                                   .size
                                                   .width,
                                               height: 60,
                                               child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      width: 60,
-                                                      height: 60,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                          color: const Color
-                                                              .fromARGB(
-                                                              193, 38, 13, 80)),
-                                                      child: ClipRRect(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 60,
+                                                    height: 60,
+                                                    decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(10),
-                                                        child: Image.asset(
-                                                          "./Image/images.jpeg",
-                                                        ),
+                                                                .circular(5),
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            193, 38, 13, 80)),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: Image.asset(
+                                                        "./Image/images.jpeg",
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      width: 20,
-                                                    ),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          file
-                                                              .split("/")
-                                                              .last
-                                                              .split("-")
-                                                              .first,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 15),
-                                                        ),
-                                                        Text(
-                                                          file
-                                                              .split("/")
-                                                              .last
-                                                              .split("-")
-                                                              .last
-                                                              .substring(
-                                                                  0,
-                                                                  file
-                                                                          .split(
-                                                                              "/")
-                                                                          .last
-                                                                          .split(
-                                                                              "-")
-                                                                          .last
-                                                                          .length -
-                                                                      4),
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 12),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ]),
-                                            ));
+                                                  ),
+                                                  SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        file
+                                                            .split("/")
+                                                            .last
+                                                            .split("-")
+                                                            .first,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15),
+                                                      ),
+                                                      Text(
+                                                        file
+                                                            .split("/")
+                                                            .last
+                                                            .split("-")
+                                                            .last
+                                                            .substring(
+                                                                0,
+                                                                file
+                                                                        .split(
+                                                                            "/")
+                                                                        .last
+                                                                        .split(
+                                                                            "-")
+                                                                        .last
+                                                                        .length -
+                                                                    4),
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                  IconButton(
+                                                      onPressed: _bottomButton,
+                                                      icon: Icon(
+                                                        Icons.more_vert,
+                                                        color: Colors.white,
+                                                      ))
+                                                ],
+                                              )),
+                                        );
                                       }))),
                         ]),
                       ),

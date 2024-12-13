@@ -11,14 +11,13 @@ class musicProvider extends ChangeNotifier {
   Duration totalDuration = Duration.zero;
   Duration currentPosition = Duration.zero;
 
-  String? _page;
+
   int currentIndex = 0;
-  late AnimationController _controller;
-  bool _isIcon = false;
-  bool _isFavorite = false;
-  bool _isShuffle = false;
-  bool _isRepeat = false;
-  bool _ismuted = false;
+  late AnimationController controller;
+  bool isIcon = false;
+  bool isShuffle = false;
+  bool isRepeat = false;
+  bool ismuted = false;
 
   Future<void> loadMusicFiles() async {
     await requestPermission();
@@ -45,7 +44,7 @@ class musicProvider extends ChangeNotifier {
     if (musicDir.existsSync()) {
       return musicDir
           .listSync()
-          .where((file) => file.path.endsWith(".mp3"))
+          .where((file) => file.path.endsWith(".m4a"))
           .map((file) => File(file.path))
           .toList();
     } else {
@@ -53,11 +52,11 @@ class musicProvider extends ChangeNotifier {
     }
   }
 
-  final Player = AudioPlayer();
+
   Future<void> playMusic(String filePath) async {
     try {
       await player.setFilePath(filePath);
-      await Player.play();
+      await player.play();
     } catch (e) {
       print("Error Playing audio:$e");
     }

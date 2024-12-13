@@ -17,10 +17,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  
-
-  await Hive.initFlutter();
+ await Hive.initFlutter();
   var fav = await Hive.openBox("mybox");
 
   runApp(ChangeNotifierProvider(create: (context)=>musicProvider(),
