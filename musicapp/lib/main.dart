@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:musicapp/MusicPage.dart';
 import 'package:musicapp/changeNotifier.dart';
-import 'package:musicapp/favoriteSong.dart';
+import 'package:musicapp/Playlist.dart';
 import 'package:musicapp/listenMusic.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -26,7 +26,7 @@ void main() async {
     routes: {
       "listen": (context) => Listenmusic(),
       "music": (context) => MusicPage(),
-      "fav": (context) => FavoriteMusiclist(),
+      "playlist": (context) => Playlist(),
       "show":(context)=>ShowBottomSheet(),
     },
   ),

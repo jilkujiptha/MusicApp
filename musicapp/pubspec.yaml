@@ -73,8 +73,6 @@ flutter:
   #   - images/a_dot_ham.jpeg
       - Image/pngegg.png
       - Image/ms-removebg-preview.png
-      - Image/share.png
-      - Image/google-symbol.png
       - Image/images.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
