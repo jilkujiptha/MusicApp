@@ -304,7 +304,8 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                                     .circular(
                                                                         10),
                                                             child: Image.asset(
-                                                              "./Image/images.jpeg",
+                                                              "./Image/msd.jpg",
+                                                              fit: BoxFit.cover,
                                                             ),
                                                           ),
                                                         ),
@@ -354,8 +355,13 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                         ),
                                                         Spacer(),
                                                         IconButton(
-                                                            onPressed:
-                                                                _bottomButton,
+                                                            onPressed: () {
+                                                              _bottomButton();
+                                                             setState(() {
+                                                                music.bottom =
+                                                                  file.path;
+                                                             });
+                                                            },
                                                             icon: Icon(
                                                               Icons.more_vert,
                                                               color:
@@ -434,7 +440,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                         onTap: () async {
                                           await player.setFilePath(file.path);
                                           music.name = file.path;
-                                          player.play();
+                                          music.playMusic(file.path);
                                           setState(() {
                                             music.isPlayer = true;
                                           });
@@ -491,12 +497,13 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                     return GestureDetector(
                                       onTap: () async {
                                         await player.setFilePath(file);
-                                        player.play();
+                                        music.playMusic(file);
                                         setState(() {
                                           music.isPlayer = true;
                                         });
                                         Navigator.pushNamed(context, "listen",
                                             arguments: file);
+                                        music.name = file;
                                       },
                                       child: Container(
                                           margin: EdgeInsets.only(top: 20),
@@ -520,7 +527,8 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                   borderRadius:
                                                       BorderRadius.circular(10),
                                                   child: Image.asset(
-                                                    "./Image/images.jpeg",
+                                                    "./Image/msd.jpg",
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
                                               ),
@@ -565,13 +573,6 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                   ),
                                                 ],
                                               ),
-                                              Spacer(),
-                                              IconButton(
-                                                  onPressed: _bottomButton,
-                                                  icon: Icon(
-                                                    Icons.more_vert,
-                                                    color: Colors.white,
-                                                  ))
                                             ],
                                           )),
                                     );
@@ -607,7 +608,8 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           child: Image.asset(
-                                            "./Image/images.jpeg",
+                                            "./Image/msd.jpg",
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),

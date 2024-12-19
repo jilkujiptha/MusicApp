@@ -21,6 +21,7 @@ class musicProvider extends ChangeNotifier {
   int currentMusicIndex = 0;
 
   String name = "";
+  String bottom = "";
 
   Future<void> loadMusicFiles() async {
     await requestPermission();
@@ -70,12 +71,6 @@ class musicProvider extends ChangeNotifier {
     return "$minutes:$seconds";
   }
 
-  @override
-  void dispose() {
-    player.dispose();
-    super.dispose();
-  }
-
   void duration() {
     player.positionStream.listen((position) {
       currentPosition = position;
@@ -113,5 +108,11 @@ class musicProvider extends ChangeNotifier {
         playNext();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 }

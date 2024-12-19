@@ -74,6 +74,7 @@ flutter:
       - Image/pngegg.png
       - Image/ms-removebg-preview.png
       - Image/images.jpeg
+      - Image/msd.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
