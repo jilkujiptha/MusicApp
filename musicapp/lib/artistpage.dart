@@ -20,7 +20,7 @@ class _ArtistState extends State<Artist> {
                 backgroundColor: Colors.transparent,
               ),
               body: Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(left: 10, right: 10, top: 100),
                 width: double.infinity,
                 height: double.infinity,
                 decoration: BoxDecoration(
@@ -36,9 +36,8 @@ class _ArtistState extends State<Artist> {
                 child: Expanded(
                     child: ListView.builder(
                         padding: EdgeInsets.all(10),
-                        itemCount: music.musicFiles.length,
+                        itemCount: 1,
                         itemBuilder: (context, index) {
-                          final file = music.musicFiles[index];
                           return Container(
                               child: Row(
                             children: [

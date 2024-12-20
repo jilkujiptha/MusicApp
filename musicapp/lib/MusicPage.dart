@@ -83,24 +83,8 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                   "Music Player",
                   style: TextStyle(color: Colors.white),
                 ),
-                leading: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.widgets_outlined,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-                actions: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.more_vert,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
+               
+               
               ),
               body: RefreshIndicator(
                 onRefresh: _refresh,

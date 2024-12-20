@@ -113,10 +113,10 @@ class _ShowBottomSheetState extends State<ShowBottomSheet> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, "artist");
-                            setState(() {
-                              music.bottom=
-                            });
+                            Navigator.pushNamed(
+                              context,
+                              "artist",
+                            );
                           },
                           child: Text(
                             "View Artist",
@@ -129,3 +129,4 @@ class _ShowBottomSheetState extends State<ShowBottomSheet> {
             ));
   }
 }
+ 
