@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:musicapp/changeNotifier.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,10 @@ class ShowBottomSheet extends StatefulWidget {
 }
 
 class _ShowBottomSheetState extends State<ShowBottomSheet> {
+  final _favorite = Hive.box("mybox");
+
   // String? _page;
+  bool _isFavorite = false;
   @override
   Widget build(BuildContext context) {
     // _page = ModalRoute.of(context)!.settings.arguments as String;
@@ -33,8 +37,10 @@ class _ShowBottomSheetState extends State<ShowBottomSheet> {
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   Text(
-                    music.bottom.split("/").last.split("-").last.substring(0,
-                        music.bottom.split("/").last.split("-").last.length - 4),
+                    music.bottom.split("/").last.split("-").last.substring(
+                        0,
+                        music.bottom.split("/").last.split("-").last.length -
+                            4),
                     style: TextStyle(color: Colors.grey),
                   ),
                   SizedBox(
@@ -53,11 +59,18 @@ class _ShowBottomSheetState extends State<ShowBottomSheet> {
                         color: Colors.white,
                       ),
                       TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Add to Liked Songs",
-                            style: TextStyle(color: Colors.white),
-                          )),
+                          onPressed: () {
+                            setState(() {
+                              _isFavorite = true;
+                            });
+                          },
+                          child: _isFavorite
+                              ? Text(
+                                  "Remove from Favorite",
+                                  style: TextStyle(color: Colors.white),
+                                )
+                              : Text("Add to favorite",
+                                  style: TextStyle(color: Colors.white))),
                     ],
                   ),
                   Row(
@@ -67,7 +80,9 @@ class _ShowBottomSheetState extends State<ShowBottomSheet> {
                         color: Colors.white,
                       ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, "playlist");
+                          },
                           child: Text(
                             "Add to Playlist",
                             style: TextStyle(color: Colors.white),
@@ -82,7 +97,7 @@ class _ShowBottomSheetState extends State<ShowBottomSheet> {
                       ),
                       TextButton(
                           onPressed: () {
-                            // Navigator.pushNamed(context, "album",arguments: _page);
+                            Navigator.pushNamed(context, "album");
                           },
                           child: Text(
                             "View Album",
@@ -97,7 +112,12 @@ class _ShowBottomSheetState extends State<ShowBottomSheet> {
                         color: Colors.white,
                       ),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, "artist");
+                            setState(() {
+                              music.bottom=
+                            });
+                          },
                           child: Text(
                             "View Artist",
                             style: TextStyle(color: Colors.white),

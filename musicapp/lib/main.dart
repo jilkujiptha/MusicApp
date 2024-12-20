@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:musicapp/MusicPage.dart';
+import 'package:musicapp/artistpage.dart';
 import 'package:musicapp/changeNotifier.dart';
 import 'package:musicapp/Playlist.dart';
 import 'package:musicapp/listenMusic.dart';
@@ -28,6 +29,7 @@ void main() async {
       "music": (context) => MusicPage(),
       "playlist": (context) => Playlist(),
       "show":(context)=>ShowBottomSheet(),
+      "artist":(context)=>Artist()
     },
   ),
   ));
