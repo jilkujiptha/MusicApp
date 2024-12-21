@@ -83,8 +83,6 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                   "Music Player",
                   style: TextStyle(color: Colors.white),
                 ),
-               
-               
               ),
               body: RefreshIndicator(
                 onRefresh: _refresh,
@@ -257,6 +255,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                       context, "listen",
                                                       arguments: file.path);
                                                   music.name = file.path;
+                                                 
                                                 },
                                                 child: Container(
                                                     margin: EdgeInsets.only(
@@ -311,9 +310,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                                   .split("-")
                                                                   .first,
                                                               style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 15),
+                                                                  color: Colors.white),
                                                             ),
                                                             Text(
                                                               file.path
@@ -341,10 +338,10 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                         IconButton(
                                                             onPressed: () {
                                                               _bottomButton();
-                                                             setState(() {
+                                                              setState(() {
                                                                 music.bottom =
-                                                                  file.path;
-                                                             });
+                                                                    file.path;
+                                                              });
                                                             },
                                                             icon: Icon(
                                                               Icons.more_vert,
@@ -438,15 +435,16 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                file.path
-                                                    .split("/")
-                                                    .last
-                                                    .split("-")
-                                                    .first,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15),
-                                              ),
+                                                  file.path
+                                                      .split("/")
+                                                      .last
+                                                      .split("-")
+                                                      .first,
+                                                  style: TextStyle(
+                                                      color: music.isPlayer
+                                                          ? Colors.green
+                                                          : Colors.white,
+                                                      fontSize: 15)),
                                               Text(
                                                 file.path
                                                     .split("/")
@@ -616,7 +614,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                   .split("-")
                                                   .first,
                                               style: TextStyle(
-                                                  color: Colors.white,
+                                                  color: Colors.green,
                                                   fontSize: 15),
                                             ),
                                           ),
@@ -639,7 +637,7 @@ class _MusicPageState extends State<MusicPage> with TickerProviderStateMixin {
                                                               .length -
                                                           4),
                                               style: TextStyle(
-                                                  color: Colors.white,
+                                                  color: Colors.green,
                                                   fontSize: 12),
                                             ),
                                           ),

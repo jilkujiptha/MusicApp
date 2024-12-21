@@ -110,6 +110,10 @@ class musicProvider extends ChangeNotifier {
     });
   }
 
+  void shuffle() {
+    musicFiles.shuffle();
+  }
+
   @override
   void dispose() {
     player.dispose();

@@ -112,7 +112,7 @@ class _ListenmusicState extends State<Listenmusic>
                     },
                     icon: Icon(
                       _isFavorite ? Icons.favorite : Icons.favorite_outline,
-                      color: _isFavorite ? Colors.red : Colors.white,
+                      color: _isFavorite ? Colors.green : Colors.white,
                       size: 25,
                     ),
                   ),
@@ -312,6 +312,8 @@ class _ListenmusicState extends State<Listenmusic>
                           onPressed: () {
                             setState(() {
                               Music.isShuffle = !Music.isShuffle;
+                              Music.shuffle();
+                              Music.player.setShuffleModeEnabled(true);
                             });
                           },
                           icon: Icon(
